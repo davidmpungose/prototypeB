@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Available Funds</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h4 class="mb-3">Financial Summary</h4>
+
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Total Loans Issued</th>
+                        <td>R {{ loans_amount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Payments Received</th>
+                        <td>R {{ payments_amount }}</td>
+                    </tr>
+                    <tr class="table-info">
+                        <th><strong>Available Funds</strong></th>
+                        <td><strong>R {{ available }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="mt-4">
+        <a href="/" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+
+</div>
+{% endblock %}

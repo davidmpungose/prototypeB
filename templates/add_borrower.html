@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add Borrower</h1>
+
+<form method="post" class="form">
+  <label>Name</label>
+  <input type="text" name="name" required />
+
+  <label>Phone</label>
+  <input type="text" name="phone" required />
+
+  <button type="submit" class="btn">Save Borrower</button>
+</form>
+
+<a href="javascript:history.back()" class="btn-secondary">Back</a>
+
+
+{% endblock %}

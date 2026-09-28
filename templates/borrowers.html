@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        <i class="bi bi-people-fill me-2"></i>Borrowers
+    </h2>
+
+    <!-- Add Borrower Button -->
+    <div class="mb-3">
+        <a href="/borrowers/add" class="btn btn-primary">
+            <i class="bi bi-person-plus-fill me-1"></i>Add New Borrower
+        </a>
+    </div>
+
+    <!-- Borrowers Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5 class="mb-3">All Borrowers</h5>
+
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Total Loans</th>
+                        <th>Total Paid</th>
+                        <th>Outstanding</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for b in borrowers %}
+                    <tr>
+
+                        <!-- Borrower ID -->
+                        <td>{{ b.id }}</td>
+
+                        <!-- Name -->
+                        <td>{{ b.name }}</td>
+
+                        <!-- Phone -->
+                        <td>{{ b.phone }}</td>
+
+                        <!-- Total Loans -->
+                        <td>
+                            {% if b.total_loans > 0 %}
+                                <span class="fw-bold">{{ b.total_loans }}</span>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Total Paid -->
+                        <td class="text-success fw-bold">
+                            R {{ b.total_paid }}
+                        </td>
+
+                        <!-- Outstanding Balance -->
+                        <td>
+                            {% if b.outstanding > 0 %}
+                                <span class="text-danger fw-bold">R {{ b.outstanding }}</span>
+                            {% else %}
+                                <span class="text-success fw-bold">R 0</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Actions -->
+                        <td>
+                            <a href="/borrowers/{{ b.id }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/loans/new?borrower_id={{ b.id }}" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-cash"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

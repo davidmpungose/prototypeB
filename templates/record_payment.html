@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Record Payment</h1>
+
+<p>Loan #{{ loan.id }} — E{{ loan.amount }}</p>
+
+<form method="post" class="form">
+
+  <label>Amount (E)</label>
+  <input type="number" name="amount" required />
+
+  <label>Date</label>
+  <input type="date" name="date" required />
+
+  <button type="submit" class="btn">Save Payment</button>
+</form>
+
+<a href="javascript:history.back()" class="btn-secondary">Back</a>
+
+{% endblock %}

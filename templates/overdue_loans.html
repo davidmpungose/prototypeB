@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Overdue Loans</h1>
+<p class="note">Prototype simulation — this list is manually defined.</p>
+
+<ul class="list">
+  {% for l in loans %}
+  <li>
+    Loan #{{ l.id }} — E{{ l.amount }} — {{ l.date }}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

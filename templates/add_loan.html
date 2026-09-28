@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add Loan</h1>
+
+<form method="post" class="form">
+
+  <label>Borrower</label>
+  <select name="borrower_id" required>
+    {% for b in borrowers %}
+    <option value="{{ b.id }}">{{ b.name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Amount (E)</label>
+  <input type="number" name="amount" required />
+
+  <label>Date</label>
+  <input type="date" name="date" required />
+
+  <button type="submit" class="btn">Save Loan</button>
+</form>
+
+<a href="javascript:history.back()" class="btn-secondary">Back</a>
+
+{% endblock %}

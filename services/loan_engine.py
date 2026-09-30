@@ -1,2 +1,2 @@
-def calculate_interest(amount, rate):
-    return amount * rate
+from database import SessionLocal
+from models import Loan

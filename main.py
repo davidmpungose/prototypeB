@@ -4,19 +4,19 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi import Form
 from fastapi.responses import RedirectResponse
-from .database import engine
-from .models import Borrower, Loan, Payment, Base, loan_balance, TransactionLog
+from database import engine
+from models import Borrower, Loan, Payment, Base, loan_balance, TransactionLog
 
 from sqlalchemy.orm import Session
-from app.database import get_db
+from database import get_db
 from fastapi import BackgroundTasks
-from app.scheduler import scheduler
+from scheduler import scheduler
 
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 # ----- Dummy data for Day 2 -----
 

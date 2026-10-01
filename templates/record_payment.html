@@ -1,20 +1,121 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Record Payment</h1>
 
-<p>Loan #{{ loan.id }} — E{{ loan.amount }}</p>
+<div class="container mt-3">
 
-<form method="post" class="form">
+    <h2 class="mb-3">
+        <i class="bi bi-cash-coin me-2 text-success"></i>Record Payment
+    </h2>
 
-  <label>Amount (E)</label>
-  <input type="number" name="amount" required />
+    <!-- Loan Summary -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-2">Loan Details</h5>
 
-  <label>Date</label>
-  <input type="date" name="date" required />
+            <p class="mb-1">
+                <strong>Loan #{{ loan.id }}</strong>
+            </p>
 
-  <button type="submit" class="btn">Save Payment</button>
+            <p class="mb-1">
+                <strong>Amount:</strong> E{{ loan.amount }}
+            </p>
+
+            <p class="mb-1">
+                <strong>Outstanding:</strong>
+                {% if balance > 0 %}
+                    <span class="text-danger fw-bold">E{{ balance }}</span>
+                {% else %}
+                    <span class="text-success fw-bold">E0</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5 class="fw-semibold mb-3">Enter Payment</h5>
+
+            <form method="post">
+
+    <!-- Hidden Loan ID -->
+    <input type="hidden" name="loan_id" value="{{ active_loan.id }}">
+
+    <!-- Amount -->
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Amount (E)</label>
+        <input type="number" name="amount" class="form-control" required>
+    </div>
+
+    <!-- Date -->
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Date</label>
+        <input type="date" name="date" class="form-control" required>
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-check-circle me-1"></i>Save Payment
+    </button>
+
 </form>
 
-<a href="javascript:history.back()" class="btn-secondary">Back</a>
+
+            <!-- Back Button -->
+            <a href="javascript:history.back()" class="btn btn-secondary w-100 mt-3">
+                <i class="bi bi-arrow-left me-1"></i>Back
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MOBILE + THEME STYLING -->
+<style>
+    /* Match gradient theme */
+    body {
+        background: linear-gradient(180deg, #F8F9FA 0%, #EDEBFF 100%);
+    }
+
+    /* Card styling */
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(75, 60, 251, 0.1);
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: linear-gradient(90deg, #4B3CFB 0%, #6C63FF 100%);
+        border: none;
+        font-weight: 500;
+        padding: 12px;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #6C63FF 0%, #4B3CFB 100%);
+    }
+
+    .btn-secondary {
+        padding: 12px;
+        font-weight: 500;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 576px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+    }
+</style>
 
 {% endblock %}

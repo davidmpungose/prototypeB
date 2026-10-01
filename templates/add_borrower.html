@@ -1,18 +1,95 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Add Borrower</h1>
 
-<form method="post" class="form">
-  <label>Name</label>
-  <input type="text" name="name" required />
+<div class="container mt-3">
 
-  <label>Phone</label>
-  <input type="text" name="phone" required />
+    <h2 class="mb-4">
+        <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Borrower
+    </h2>
 
-  <button type="submit" class="btn">Save Borrower</button>
-</form>
+    <!-- Borrower Form Card -->
+    <div class="card shadow-sm">
+        <div class="card-body">
 
-<a href="javascript:history.back()" class="btn-secondary">Back</a>
+            <h5 class="fw-semibold mb-3">Borrower Details</h5>
 
+            <form method="post">
+
+                <!-- Name -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+
+                <!-- Phone -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Phone</label>
+                    <input type="text" name="phone" class="form-control" required>
+                </div>
+
+                <!-- Save Button -->
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-check-circle me-1"></i>Save Borrower
+                </button>
+
+            </form>
+
+            <!-- Back Button -->
+            <a href="javascript:history.back()" class="btn btn-secondary w-100 mt-3">
+                <i class="bi bi-arrow-left me-1"></i>Back
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MOBILE + THEME STYLING -->
+<style>
+
+    /* Match gradient theme */
+    body {
+        background: linear-gradient(180deg, #F8F9FA 0%, #EDEBFF 100%);
+    }
+
+    /* Card styling */
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(75, 60, 251, 0.1);
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: linear-gradient(90deg, #4B3CFB 0%, #6C63FF 100%);
+        border: none;
+        font-weight: 500;
+        padding: 12px;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #6C63FF 0%, #4B3CFB 100%);
+    }
+
+    .btn-secondary {
+        padding: 12px;
+        font-weight: 500;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 576px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+    }
+
+</style>
 
 {% endblock %}

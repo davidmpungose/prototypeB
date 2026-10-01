@@ -1,4 +1,6 @@
-/* Base reset */
+/* ---------------------------------------------------------
+   GLOBAL RESET & BASE
+--------------------------------------------------------- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,68 +9,125 @@
 
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f5f7fa;
+    background: linear-gradient(180deg, #F8F9FA 0%, #EDEBFF 100%);
     color: #1f2933;
 }
 
-/* Header */
-.app-header {
-    background: #0f766e;
-    color: #ffffff;
-    padding: 0.75rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+/* ---------------------------------------------------------
+   NAVBAR (Bootstrap override)
+--------------------------------------------------------- */
+.navbar-dark.bg-dark {
+    background: linear-gradient(90deg, #4B3CFB 0%, #6C63FF 100%) !important;
 }
 
-.app-title {
-    font-size: 1.25rem;
+.nav-link {
+    font-weight: 500;
+    color: #e0e0ff !important;
+}
+
+.nav-link:hover {
+    color: #ffffff !important;
+}
+
+/* ---------------------------------------------------------
+   HEADINGS
+--------------------------------------------------------- */
+h1, h2, h3, h4, h5 {
     font-weight: 600;
+    color: #1f1f2e;
+    margin-bottom: 0.75rem;
 }
 
-/* Top navigation */
-.top-nav {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-}
-
-.top-nav a {
-    color: #e0f2f1;
-    text-decoration: none;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.7rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    white-space: nowrap;
-}
-
-.top-nav a:hover {
-    background: rgba(255, 255, 255, 0.12);
-}
-
-/* Main container */
-.app-main {
-    padding: 1rem;
-}
-
-/* Cards & sections */
+/* ---------------------------------------------------------
+   CARDS
+--------------------------------------------------------- */
 .card {
     background: #ffffff;
-    border-radius: 0.75rem;
-    padding: 0.9rem;
-    margin-bottom: 0.75rem;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(75, 60, 251, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Headings */
-h1, h2, h3 {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(75, 60, 251, 0.15);
 }
 
-/* Tables -> scrollable on mobile */
-.table-wrapper {
+/* ---------------------------------------------------------
+   BUTTONS
+--------------------------------------------------------- */
+.btn-primary {
+    background: linear-gradient(90deg, #4B3CFB 0%, #6C63FF 100%);
+    border: none;
+    font-weight: 500;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #6C63FF 0%, #4B3CFB 100%);
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.btn-outline-primary {
+    border-color: #6C63FF;
+    color: #4B3CFB;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background: #6C63FF;
+    color: #fff;
+}
+
+/* Full-width buttons on mobile */
+@media (max-width: 600px) {
+    .btn, .btn-primary, .btn-secondary, .btn-outline-primary {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* ---------------------------------------------------------
+   FORMS
+--------------------------------------------------------- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+label {
+    font-size: 0.95rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+}
+
+/* ---------------------------------------------------------
+   TABLES
+--------------------------------------------------------- */
+.table-responsive {
+    border-radius: 12px;
     overflow-x: auto;
 }
 
@@ -78,63 +137,30 @@ table {
     font-size: 0.9rem;
 }
 
-th, td {
-    padding: 0.5rem;
+th {
+    background-color: #4B3CFB !important;
+    color: #ffffff;
+    padding: 0.75rem;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.65rem;
     border-bottom: 1px solid #e5e7eb;
 }
 
-th {
-    text-align: left;
-    background: #f9fafb;
-    font-weight: 500;
+.table-hover tbody tr:hover {
+    background-color: rgba(75, 60, 251, 0.05);
 }
 
-/* Forms */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-label {
-    font-size: 0.85rem;
-    color: #4b5563;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 0.55rem 0.7rem;
-    border-radius: 0.5rem;
-    border: 1px solid #d1d5db;
-    font-size: 0.9rem;
-}
-
-button,
-input[type="submit"] {
-    padding: 0.6rem 0.9rem;
-    border-radius: 0.6rem;
-    border: none;
-    background: #0f766e;
-    color: #ffffff;
-    font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-button.secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
-/* Status badges */
+/* ---------------------------------------------------------
+   BADGES
+--------------------------------------------------------- */
 .badge {
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
+    padding: 0.35rem 0.6rem;
     border-radius: 999px;
     font-size: 0.75rem;
+    font-weight: 600;
 }
 
 .badge-success {
@@ -152,26 +178,24 @@ button.secondary {
     color: #b91c1c;
 }
 
-/* Mobile tweaks */
+/* ---------------------------------------------------------
+   MOBILE OPTIMIZATION
+--------------------------------------------------------- */
 @media (max-width: 600px) {
-    .app-header {
-        padding: 0.6rem 0.8rem;
-    }
 
-    .app-main {
-        padding: 0.75rem;
+    h1, h2, h3 {
+        font-size: 1.3rem;
     }
 
     table {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     th, td {
-        padding: 0.4rem;
+        padding: 0.5rem;
     }
 
-    button,
-    input[type="submit"] {
-        width: 100%;
+    .card {
+        margin-bottom: 1rem;
     }
 }

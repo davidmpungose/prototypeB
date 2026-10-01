@@ -6,6 +6,7 @@ from fastapi import Form
 from fastapi.responses import RedirectResponse
 from database import engine
 from models import Borrower, Loan, Payment, Base, loan_balance, TransactionLog
+from services.loan_engine import is_overdue
 
 from sqlalchemy.orm import Session
 from database import get_db
@@ -167,50 +168,37 @@ async def borrower_detail(request: Request, borrower_id: int, db: Session = Depe
     if not borrower:
         return HTMLResponse("Borrower not found", status_code=404)
 
-    # All loans for this borrower
     loans = db.query(Loan).filter(Loan.borrower_id == borrower_id).all()
-
-    # All payments for this borrower (via loan_id)
     payments = db.query(Payment).join(Loan).filter(
         Loan.borrower_id == borrower_id).all()
 
     # Total borrowed
-    total_borrowed = sum(l.amount for l in loans)
+    total_loans = sum(l.amount for l in loans)
 
     # Total paid
     total_paid = sum(p.amount for p in payments)
 
     # Outstanding balance
-    outstanding_balance = total_borrowed - total_paid
+    outstanding_balance = total_loans - total_paid
 
-    # Active loans count
-    active_loans = sum(1 for l in loans if l.status == "Active")
-
-    # Compute balance per loan (for the table)
-    enriched_loans = []
-    for loan in loans:
-        loan_payments = [p.amount for p in payments if p.loan_id == loan.id]
-        balance = loan.amount - sum(loan_payments)
-
-        enriched_loans.append({
-            "id": loan.id,
-            "amount": loan.amount,
-            "date": loan.date,
-            "status": loan.status,
-            "balance": balance
-        })
+    # Active loan (first active loan)
+    active_loan = None
+    for l in loans:
+        if l.status == "Active":
+            active_loan = l
+            break
 
     return templates.TemplateResponse(
         "borrower_detail.html",
         {
             "request": request,
             "borrower": borrower,
-            "loans": enriched_loans,
+            "loans": loans,
             "payments": payments,
-            "total_borrowed": total_borrowed,
+            "total_loans": total_loans,
             "total_paid": total_paid,
             "outstanding_balance": outstanding_balance,
-            "active_loans": active_loans,
+            "active_loan": active_loan,
         }
     )
 

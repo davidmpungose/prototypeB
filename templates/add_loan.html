@@ -1,25 +1,79 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Add Loan</h1>
 
-<form method="post" class="form">
+<div class="container mt-3">
 
-  <label>Borrower</label>
-  <select name="borrower_id" required>
-    {% for b in borrowers %}
-    <option value="{{ b.id }}">{{ b.name }}</option>
-    {% endfor %}
-  </select>
+    <h2 class="mb-4">
+        <i class="bi bi-plus-circle me-2"></i>Add Loan
+    </h2>
 
-  <label>Amount (E)</label>
-  <input type="number" name="amount" required />
+    <div class="card shadow-sm">
+        <div class="card-body">
 
-  <label>Date</label>
-  <input type="date" name="date" required />
+            <form method="post">
 
-  <button type="submit" class="btn">Save Loan</button>
-</form>
+                <!-- Borrower -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Borrower</label>
+                    <select name="borrower_id" class="form-select" required>
+                        {% for b in borrowers %}
+                        <option value="{{ b.id }}">{{ b.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-<a href="javascript:history.back()" class="btn-secondary">Back</a>
+                <!-- Amount -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Amount (E)</label>
+                    <input type="number" name="amount" class="form-control" required>
+                </div>
+
+                <!-- Date -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+
+                <!-- Save Button -->
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-check-circle me-1"></i>Save Loan
+                </button>
+
+            </form>
+
+            <!-- Back Button -->
+            <a href="javascript:history.back()" class="btn btn-secondary w-100 mt-3">
+                <i class="bi bi-arrow-left me-1"></i>Back
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- MOBILE OPTIMIZATION -->
+<style>
+    @media (max-width: 576px) {
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        button.btn {
+            padding: 12px;
+            font-size: 1rem;
+        }
+    }
+</style>
 
 {% endblock %}

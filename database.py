@@ -1,22 +1,21 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# SQLite database URL
-DATABASE_URL = "sqlite:///./boleka.db"
-
-# Create engine
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}  # Required for SQLite in FastAPI
+DATABASE_URL = (
+    "mssql+pyodbc://@localhost/BolekaDB"
+    "?driver=ODBC+Driver+18+for+SQL+Server"
+    "&trusted_connection=yes"
+    "&TrustServerCertificate=yes"
 )
 
-# Session factory
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(
+    DATABASE_URL,
+    echo=True,
+)
 
-# Base class for models
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
 Base = declarative_base()
-
-# Dependency for FastAPI routes
 
 
 def get_db():

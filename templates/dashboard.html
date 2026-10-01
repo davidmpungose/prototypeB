@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-3">
 
     <h2 class="mb-4">
         <i class="bi bi-speedometer2 me-2"></i>Dashboard
@@ -11,10 +11,10 @@
     <div class="row g-3">
 
         <!-- Borrowers -->
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="card shadow-sm border-primary">
                 <div class="card-body text-center">
-                    <i class="bi bi-people-fill text-primary fs-3"></i>
+                    <i class="bi bi-people-fill text-primary fs-2"></i>
                     <h6 class="mt-2">Borrowers</h6>
                     <h3 class="fw-bold">{{ borrowers_count }}</h3>
                 </div>
@@ -22,10 +22,10 @@
         </div>
 
         <!-- Loans -->
-        <div class="col-md-3">
-            <div class="card shadow-sm border-purple">
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm border-secondary">
                 <div class="card-body text-center">
-                    <i class="bi bi-journal-text text-secondary fs-3"></i>
+                    <i class="bi bi-journal-text text-secondary fs-2"></i>
                     <h6 class="mt-2">Loans</h6>
                     <h3 class="fw-bold">{{ loans_count }}</h3>
                 </div>
@@ -33,10 +33,10 @@
         </div>
 
         <!-- Money Lent -->
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="card shadow-sm border-warning">
                 <div class="card-body text-center">
-                    <i class="bi bi-arrow-up-circle text-warning fs-3"></i>
+                    <i class="bi bi-arrow-up-circle text-warning fs-2"></i>
                     <h6 class="mt-2">Money Lent</h6>
                     <h3 class="fw-bold">R {{ money_lent }}</h3>
                 </div>
@@ -44,10 +44,10 @@
         </div>
 
         <!-- Money Received -->
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
             <div class="card shadow-sm border-success">
                 <div class="card-body text-center">
-                    <i class="bi bi-arrow-down-circle text-success fs-3"></i>
+                    <i class="bi bi-arrow-down-circle text-success fs-2"></i>
                     <h6 class="mt-2">Money Received</h6>
                     <h3 class="fw-bold">R {{ money_received }}</h3>
                 </div>
@@ -60,13 +60,13 @@
     <div class="row g-3 mt-4">
 
         <!-- Available Funds -->
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
             <div class="card shadow-sm border-success">
                 <div class="card-body text-center">
-                    <i class="bi bi-wallet2 text-success fs-3"></i>
+                    <i class="bi bi-wallet2 text-success fs-2"></i>
                     <h6 class="mt-2">Available Funds</h6>
                     <h3 class="fw-bold text-success">R {{ available }}</h3>
-                    <a href="/available-funds" class="btn btn-outline-success btn-sm mt-2">
+                    <a href="/available-funds" class="btn btn-outline-success btn-sm mt-2 w-100">
                         View Details
                     </a>
                 </div>
@@ -74,13 +74,13 @@
         </div>
 
         <!-- Overdue Loans -->
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
             <div class="card shadow-sm border-danger">
                 <div class="card-body text-center">
-                    <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
+                    <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
                     <h6 class="mt-2">Overdue Loans</h6>
                     <h3 class="fw-bold text-danger">{{ overdue_count }}</h3>
-                    <a href="/loans/overdue" class="btn btn-outline-danger btn-sm mt-2">
+                    <a href="/loans/overdue" class="btn btn-outline-danger btn-sm mt-2 w-100">
                         View Overdue
                     </a>
                 </div>
@@ -88,13 +88,13 @@
         </div>
 
         <!-- Upcoming Payments -->
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
             <div class="card shadow-sm border-info">
                 <div class="card-body text-center">
-                    <i class="bi bi-calendar-event text-info fs-3"></i>
+                    <i class="bi bi-calendar-event text-info fs-2"></i>
                     <h6 class="mt-2">Upcoming Payments</h6>
                     <h3 class="fw-bold text-info">{{ upcoming_count }}</h3>
-                    <a href="#" class="btn btn-outline-info btn-sm mt-2">
+                    <a href="#" class="btn btn-outline-info btn-sm mt-2 w-100">
                         View Schedule
                     </a>
                 </div>
@@ -105,10 +105,10 @@
 
     <!-- Navigation Buttons -->
     <div class="mt-4">
-        <a href="/borrowers" class="btn btn-primary me-2">
+        <a href="/borrowers" class="btn btn-primary me-2 w-100 mb-2">
             <i class="bi bi-people-fill me-1"></i>Borrowers
         </a>
-        <a href="/loans" class="btn btn-secondary">
+        <a href="/loans" class="btn btn-secondary w-100">
             <i class="bi bi-journal-text me-1"></i>Loans
         </a>
     </div>

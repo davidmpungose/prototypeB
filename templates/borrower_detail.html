@@ -1,186 +1,42 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container mt-4">
 
-    <h2 class="mb-4">
-        <i class="bi bi-person-circle me-2"></i>Borrower Details
-    </h2>
+<section class="section">
+    <h3 class="section-title">{{ borrower.name }}</h3>
+    <p class="item-sub">Phone: {{ borrower.phone }}</p>
 
-    <!-- Borrower Info -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-
-            <h5 class="mb-3">
-                <i class="bi bi-person-lines-fill me-2"></i>Borrower Information
-            </h5>
-
-            <p><strong>Name:</strong> {{ borrower.name }}</p>
-            <p><strong>Phone:</strong> {{ borrower.phone }}</p>
-
-        </div>
+    <div class="card">
+        <p class="card-label">Total Loans</p>
+        <p class="card-value">E {{ total_loans }}</p>
     </div>
 
-    <!-- Borrower Financial Summary -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-
-            <h5 class="mb-3">
-                <i class="bi bi-wallet2 me-2"></i>Financial Summary
-            </h5>
-
-            <div class="row">
-
-                <div class="col-md-4 mb-3">
-                    <strong>Total Loans:</strong>
-                    <div class="fs-5 fw-bold">{{ loans|length }}</div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <strong>Total Borrowed:</strong>
-                    <div class="fs-5 fw-bold text-warning">R {{ total_borrowed }}</div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <strong>Total Paid:</strong>
-                    <div class="fs-5 fw-bold text-success">R {{ total_paid }}</div>
-                </div>
-
-            </div>
-
-            <hr>
-
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-                    <strong>Outstanding Balance:</strong>
-                    {% if outstanding_balance > 0 %}
-                        <div class="fs-5 fw-bold text-danger">R {{ outstanding_balance }}</div>
-                    {% else %}
-                        <div class="fs-5 fw-bold text-success">R 0</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <strong>Active Loans:</strong>
-                    <div class="fs-5 fw-bold">{{ active_loans }}</div>
-                </div>
-
-            </div>
-
-        </div>
+    <div class="card">
+        <p class="card-label">Outstanding Balance</p>
+        <p class="card-value">E {{ outstanding_balance }}</p>
     </div>
+</section>
 
-    <!-- Loan History -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
+<section class="section">
+    <h3 class="section-title">Record Payment</h3>
 
-            <h5 class="mb-3">
-                <i class="bi bi-journal-text me-2"></i>Loan History
-            </h5>
+    <form method="post" action="/record_payment" class="form-card">
+        <input type="hidden" name="loan_id" value="{{ loan.id }}">
+        <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+        <button class="primary-btn">Save Payment</button>
+    </form>
+</section>
 
-            {% if loans %}
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Balance</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+<section class="section">
+    <h3 class="section-title">Payment History</h3>
 
-                <tbody>
-                    {% for loan in loans %}
-                    <tr>
-                        <td>{{ loan.id }}</td>
-                        <td>R {{ loan.amount }}</td>
-                        <td>{{ loan.date }}</td>
-
-                        <td>
-                            {% if loan.status == "Active" %}
-                                <span class="badge bg-success">Active</span>
-                            {% elif loan.status == "Overdue" %}
-                                <span class="badge bg-danger">Overdue</span>
-                            {% elif loan.status == "Paid" %}
-                                <span class="badge bg-primary">Paid</span>
-                            {% else %}
-                                <span class="badge bg-secondary">{{ loan.status }}</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if loan.balance > 0 %}
-                                <span class="text-danger fw-bold">R {{ loan.balance }}</span>
-                            {% else %}
-                                <span class="text-success fw-bold">R 0</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            <a href="/loans/{{ loan.id }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="/loans/{{ loan.id }}/pay" class="btn btn-sm btn-outline-success">
-                                <i class="bi bi-cash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-            {% else %}
-                <p class="text-muted">No loans recorded for this borrower.</p>
-            {% endif %}
-
+    <div class="list">
+        {% for p in payments %}
+        <div class="list-item">
+            <p class="item-title">E {{ p.amount }}</p>
+            <p class="item-sub">{{ p.date.strftime('%Y-%m-%d') }}</p>
         </div>
+        {% endfor %}
     </div>
+</section>
 
-    <!-- Payment History -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-
-            <h5 class="mb-3">
-                <i class="bi bi-receipt me-2"></i>Payment History
-            </h5>
-
-            {% if payments %}
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Loan ID</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for p in payments %}
-                    <tr>
-                        <td>{{ p.id }}</td>
-                        <td>{{ p.loan_id }}</td>
-                        <td>R {{ p.amount }}</td>
-                        <td>{{ p.date }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-            {% else %}
-                <p class="text-muted">No payments recorded for this borrower.</p>
-            {% endif %}
-
-        </div>
-    </div>
-
-    <!-- Back Button -->
-    <a href="/borrowers" class="btn btn-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Back to Borrowers
-    </a>
-
-</div>
 {% endblock %}

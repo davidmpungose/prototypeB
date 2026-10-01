@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-3">
 
     <h2 class="mb-4">
         <i class="bi bi-people-fill me-2"></i>Borrowers
@@ -9,7 +9,7 @@
 
     <!-- Add Borrower Button -->
     <div class="mb-3">
-        <a href="/borrowers/new" class="btn btn-primary">
+        <a href="/borrowers/new" class="btn btn-primary w-100">
             <i class="bi bi-person-plus-fill me-1"></i>Add New Borrower
         </a>
     </div>
@@ -20,73 +20,114 @@
 
             <h5 class="mb-3">All Borrowers</h5>
 
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Total Loans</th>
-                        <th>Total Paid</th>
-                        <th>Outstanding</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            <!-- MOBILE SCROLL WRAPPER -->
+            <div class="table-responsive">
 
-                <tbody>
-                    {% for b in borrowers %}
-                    <tr>
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Total Loans</th>
+                            <th>Total Paid</th>
+                            <th>Outstanding</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-                        <!-- Borrower ID -->
-                        <td>{{ b.id }}</td>
+                    <tbody>
+                        {% for b in borrowers %}
+                        <tr>
 
-                        <!-- Name -->
-                        <td>{{ b.name }}</td>
+                            <!-- Borrower ID -->
+                            <td>{{ b.id }}</td>
 
-                        <!-- Phone -->
-                        <td>{{ b.phone }}</td>
+                            <!-- Name -->
+                            <td>{{ b.name }}</td>
 
-                        <!-- Total Loans -->
-                        <td>
-                            {% if b.total_loans > 0 %}
-                                <span class="fw-bold">{{ b.total_loans }}</span>
-                            {% else %}
-                                <span class="text-muted">0</span>
-                            {% endif %}
-                        </td>
+                            <!-- Phone -->
+                            <td>{{ b.phone }}</td>
 
-                        <!-- Total Paid -->
-                        <td class="text-success fw-bold">
-                            R {{ b.total_paid }}
-                        </td>
+                            <!-- Total Loans -->
+                            <td>
+                                {% if b.total_loans > 0 %}
+                                    <span class="fw-bold">{{ b.total_loans }}</span>
+                                {% else %}
+                                    <span class="text-muted">0</span>
+                                {% endif %}
+                            </td>
 
-                        <!-- Outstanding Balance -->
-                        <td>
-                            {% if b.outstanding > 0 %}
-                                <span class="text-danger fw-bold">R {{ b.outstanding }}</span>
-                            {% else %}
-                                <span class="text-success fw-bold">R 0</span>
-                            {% endif %}
-                        </td>
+                            <!-- Total Paid -->
+                            <td class="text-success fw-bold">
+                                R {{ b.total_paid }}
+                            </td>
 
-                        <!-- Actions -->
-                        <td>
-                            <a href="/borrowers/{{ b.id }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="/loans/new?borrower_id={{ b.id }}" class="btn btn-sm btn-outline-success">
-                                <i class="bi bi-cash"></i>
-                            </a>
-                        </td>
+                            <!-- Outstanding Balance -->
+                            <td>
+                                {% if b.outstanding > 0 %}
+                                    <span class="text-danger fw-bold">R {{ b.outstanding }}</span>
+                                {% else %}
+                                    <span class="text-success fw-bold">R 0</span>
+                                {% endif %}
+                            </td>
 
-                    </tr>
-                    {% endfor %}
-                </tbody>
+                            <!-- Actions -->
+                            <td class="text-center">
 
-            </table>
+                                <a href="/borrowers/{{ b.id }}" 
+                                   class="btn btn-sm btn-outline-primary mb-1 w-100">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <a href="/loans/new?borrower_id={{ b.id }}" 
+                                   class="btn btn-sm btn-outline-success w-100">
+                                    <i class="bi bi-cash"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div> <!-- end table-responsive -->
 
         </div>
     </div>
 
 </div>
+
+<!-- MOBILE OPTIMIZATION -->
+<style>
+    @media (max-width: 576px) {
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table th, table td {
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        td .btn {
+            padding: 6px 8px;
+            font-size: 0.75rem;
+        }
+
+        .btn-primary {
+            font-size: 0.95rem;
+            padding: 10px;
+        }
+    }
+</style>
+
 {% endblock %}

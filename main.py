@@ -172,21 +172,15 @@ async def borrower_detail(request: Request, borrower_id: int, db: Session = Depe
     payments = db.query(Payment).join(Loan).filter(
         Loan.borrower_id == borrower_id).all()
 
-    # Total borrowed
     total_loans = sum(l.amount for l in loans)
-
-    # Total paid
     total_paid = sum(p.amount for p in payments)
-
-    # Outstanding balance
     outstanding_balance = total_loans - total_paid
 
-    # Active loan (first active loan)
-    active_loan = None
-    for l in loans:
-        if l.status == "Active":
-            active_loan = l
-            break
+    # Find active loan
+    active_loan = db.query(Loan).filter(
+        Loan.borrower_id == borrower_id,
+        Loan.status == "Active"
+    ).first()
 
     return templates.TemplateResponse(
         "borrower_detail.html",
@@ -198,7 +192,7 @@ async def borrower_detail(request: Request, borrower_id: int, db: Session = Depe
             "total_loans": total_loans,
             "total_paid": total_paid,
             "outstanding_balance": outstanding_balance,
-            "active_loan": active_loan,
+            "active_loan": active_loan
         }
     )
 
@@ -282,6 +276,25 @@ async def record_payment_form(request: Request, loan_id: int, db: Session = Depe
         "record_payment.html",
         {"request": request, "loan": loan}
     )
+
+
+@app.post("/record_payment")
+async def record_payment(request: Request, db: Session = Depends(get_db)):
+    form = await request.form()
+    loan_id = int(form["loan_id"])
+    amount = float(form["amount"])
+    date = form["date"]
+
+    payment = Payment(
+        loan_id=loan_id,
+        amount=amount,
+        date=date
+    )
+
+    db.add(payment)
+    db.commit()
+
+    return RedirectResponse(f"/loans/{loan_id}", status_code=303)
 
 
 @app.post("/loans/{loan_id}/pay")

@@ -41,8 +41,13 @@ class Payment(Base):
 
 def loan_balance(db: Session, loan_id: int):
     loan = db.query(Loan).filter(Loan.id == loan_id).first()
+
+    if loan is None:
+        return 0  # or raise an error, but 0 is safer for UI
+
     payments = db.query(Payment).filter(Payment.loan_id == loan_id).all()
     received = sum(p.amount for p in payments)
+
     return loan.amount - received
 
 

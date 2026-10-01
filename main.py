@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import FastAPI, Request,   Form, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -236,33 +237,27 @@ async def add_loan_form(request: Request, db: Session = Depends(get_db)):
 
 
 @app.post("/loans/new")
-async def add_loan(
-    borrower_id: int = Form(...),
-    amount: float = Form(...),
-    date: str = Form(...),
-    db: Session = Depends(get_db)
-):
+async def create_loan(request: Request, db: Session = Depends(get_db)):
+    form = await request.form()
+
+    borrower_id = int(form["borrower_id"])
+    amount = float(form["amount"])
+
+    # Convert HTML date string → Python date object
+    date_str = form["date"]
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+
     loan = Loan(
         borrower_id=borrower_id,
         amount=amount,
-        date=date,
+        date=date_obj,
         status="Active"
     )
+
     db.add(loan)
     db.commit()
-    db.refresh(loan)
 
-    # Log the loan creation
-    log = TransactionLog(
-        type="loan",
-        amount=amount,
-        date=date,
-        loan_id=loan.id
-    )
-    db.add(log)
-    db.commit()
-
-    return RedirectResponse(url="/loans", status_code=303)
+    return RedirectResponse("/loans", status_code=303)
 
 
 # -----------------------------

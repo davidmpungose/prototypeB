@@ -1,0 +1,32 @@
+#web framework
+fastapi == 0.110.0
+
+#uvicorn for running the FastAPI app
+uvicorn
+
+
+# Data & Security
+pydantic==2.6.3
+python-dotenv==1.0.1
+passlib[bcrypt]==1.7.4
+pydantic-settings
+sqlalchemy
+pyodbc
+
+# API Integrations
+requests==2.31.0
+
+# Task Scheduling (For daily interest updates)
+celery==5.3.6
+redis==5.0.1
+
+#ngrok for momo notifications
+ngrok
+
+pymssql
+Jinja2
+httpx
+aiosqlite
+apscheduler
+
+python-multipart

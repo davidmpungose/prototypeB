@@ -311,34 +311,6 @@ async def record_payment(request: Request, db: Session = Depends(get_db)):
     return RedirectResponse(f"/loans/{loan_id}", status_code=303)
 
 
-@app.post("/loans/{loan_id}/pay")
-async def record_payment(
-    loan_id: int,
-    amount: float = Form(...),
-    date: str = Form(...),
-    db: Session = Depends(get_db)
-):
-    payment = Payment(
-        loan_id=loan_id,
-        amount=amount,
-        date=date
-    )
-    db.add(payment)
-    db.commit()
-
-    # Log the payment
-    log = TransactionLog(
-        type="payment",
-        amount=amount,
-        date=date,
-        loan_id=loan_id
-    )
-    db.add(log)
-    db.commit()
-
-    return RedirectResponse(url=f"/loans/{loan_id}", status_code=303)
-
-
 # -----------------------------
 # LOANS (DYNAMIC ROUTE LAST)
 # -----------------------------
@@ -480,6 +452,47 @@ async def loan_detail(request: Request, loan_id: int, db: Session = Depends(get_
             "balance": balance,
         },
     )
+
+
+@app.get("/loans/{loan_id}/pay", response_class=HTMLResponse)
+async def pay_loan(request: Request, loan_id: int, db: Session = Depends(get_db)):
+    loan = db.query(Loan).filter(Loan.id == loan_id).first()
+    if not loan:
+        return HTMLResponse("Loan not found", status_code=404)
+
+    balance = loan_balance(db, loan_id)
+    borrower = db.query(Borrower).filter(
+        Borrower.id == loan.borrower_id).first()
+
+    return templates.TemplateResponse(
+        "record_payment.html",
+        {
+            "request": request,
+            "loan": loan,
+            "balance": balance,
+            "borrower": borrower
+        }
+    )
+
+
+@app.post("/loans/{loan_id}/pay")
+async def pay_loan_post(request: Request, loan_id: int, db: Session = Depends(get_db)):
+    form = await request.form()
+
+    amount = float(form["amount"])
+    date_str = form["date"]
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+    payment = Payment(
+        loan_id=loan_id,
+        amount=amount,
+        date=date_obj
+    )
+
+    db.add(payment)
+    db.commit()
+
+    return RedirectResponse(f"/loans/{loan_id}", status_code=303)
 
 
 @app.get("/overdue", response_class=HTMLResponse)

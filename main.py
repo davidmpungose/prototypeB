@@ -294,10 +294,9 @@ async def record_payment(request: Request, db: Session = Depends(get_db)):
 
     loan_id = int(form["loan_id"])
     amount = float(form["amount"])
-    date_str = form["date"]
 
-    # Convert date string → Python date
-    from datetime import datetime
+    # Convert HTML date string → Python date object
+    date_str = form["date"]
     date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
 
     payment = Payment(

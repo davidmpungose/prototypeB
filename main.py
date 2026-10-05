@@ -265,25 +265,45 @@ async def create_loan(request: Request, db: Session = Depends(get_db)):
 # -----------------------------
 
 @app.get("/loans/{loan_id}/pay", response_class=HTMLResponse)
-async def record_payment_form(request: Request, loan_id: int, db: Session = Depends(get_db)):
+async def pay_loan(request: Request, loan_id: int, db: Session = Depends(get_db)):
     loan = db.query(Loan).filter(Loan.id == loan_id).first()
+    if not loan:
+        return HTMLResponse("Loan not found", status_code=404)
+
+    # Compute balance safely
+    balance = loan_balance(db, loan_id)
+
+    # Borrower info (optional but useful)
+    borrower = db.query(Borrower).filter(
+        Borrower.id == loan.borrower_id).first()
+
     return templates.TemplateResponse(
         "record_payment.html",
-        {"request": request, "loan": loan}
+        {
+            "request": request,
+            "loan": loan,
+            "balance": balance,
+            "borrower": borrower
+        }
     )
 
 
 @app.post("/record_payment")
 async def record_payment(request: Request, db: Session = Depends(get_db)):
     form = await request.form()
+
     loan_id = int(form["loan_id"])
     amount = float(form["amount"])
-    date = form["date"]
+    date_str = form["date"]
+
+    # Convert date string → Python date
+    from datetime import datetime
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
 
     payment = Payment(
         loan_id=loan_id,
         amount=amount,
-        date=date
+        date=date_obj
     )
 
     db.add(payment)

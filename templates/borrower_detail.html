@@ -9,15 +9,16 @@
     </h2>
     <p class="text-muted mb-4">Phone: {{ borrower.phone }}</p>
 
-    <!-- Loan Summary Cards -->
-    <div class="card shadow-sm mb-3">
+    <!-- Total Loans Card -->
+    <div class="card borrower-card shadow-sm mb-3">
         <div class="card-body">
             <h5 class="fw-semibold mb-2">Total Loans</h5>
             <p class="fs-4 fw-bold">E {{ total_loans }}</p>
         </div>
     </div>
 
-    <div class="card shadow-sm mb-4">
+    <!-- Outstanding Balance Card -->
+    <div class="card borrower-card shadow-sm mb-3">
         <div class="card-body">
             <h5 class="fw-semibold mb-2">Outstanding Balance</h5>
             {% if outstanding_balance > 0 %}
@@ -28,42 +29,54 @@
         </div>
     </div>
 
-    <!-- Record Payment -->
-    <div class="card shadow-sm mb-4">
+    <!-- Record Payment Card -->
+    <div class="card borrower-card shadow-sm mb-3">
         <div class="card-body">
 
             <h5 class="fw-semibold mb-3">Record Payment</h5>
 
-            <form method="post" action="/record_payment" class="form-card">
+            {% if active_loan %}
+            <form method="post" action="/record_payment">
 
-    {% if active_loan %}
-        <input type="hidden" name="loan_id" value="{{ active_loan.id }}">
-    {% else %}
-        <p class="text-muted fst-italic">No active loan available.</p>
-    {% endif %}
+                <input type="hidden" name="loan_id" value="{{ active_loan.id }}">
 
-    <input type="number" step="0.01" name="amount" placeholder="Amount" required>
-    <button class="primary-btn">Save Payment</button>
-</form>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Amount (E)</label>
+                    <input type="number" step="0.01" name="amount" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-check-circle me-1"></i>Save Payment
+                </button>
+
+            </form>
+            {% else %}
+                <p class="text-muted fst-italic">No active loan available.</p>
+            {% endif %}
 
         </div>
     </div>
 
-    <!-- Payment History -->
-    <div class="card shadow-sm mb-4">
+    <!-- Payment History Card -->
+    <div class="card borrower-card shadow-sm mb-3">
         <div class="card-body">
 
             <h5 class="fw-semibold mb-3">Payment History</h5>
 
             {% if payments %}
-                <div class="list-group">
-                    {% for p in payments %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="fw-bold">E {{ p.amount }}</span>
-                        <span class="text-muted">{{ p.date.strftime('%Y-%m-%d') }}</span>
-                    </div>
-                    {% endfor %}
+                {% for p in payments %}
+                <div class="payment-card mb-3 p-3 rounded shadow-sm">
+
+                    <p class="mb-1"><strong>Amount:</strong> E {{ p.amount }}</p>
+                    <p class="mb-1"><strong>Date:</strong> {{ p.date.strftime('%Y-%m-%d') }}</p>
+
                 </div>
+                {% endfor %}
             {% else %}
                 <p class="text-muted fst-italic">No payments recorded yet.</p>
             {% endif %}
@@ -78,54 +91,50 @@
 
 </div>
 
-<!-- THEME + MOBILE STYLING -->
+<!-- CARD-BASED MOBILE STYLING -->
 <style>
 
-    /* Gradient background */
-    body {
-        background: linear-gradient(180deg, #F8F9FA 0%, #EDEBFF 100%);
-    }
-
-    /* Card styling */
-    .card {
+    .borrower-card {
         border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(75, 60, 251, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* Buttons */
-    .btn-primary {
-        background: linear-gradient(90deg, #4B3CFB 0%, #6C63FF 100%);
-        border: none;
-        font-weight: 500;
-        padding: 12px;
-    }
-    .btn-primary:hover {
-        background: linear-gradient(90deg, #6C63FF 0%, #4B3CFB 100%);
+    .borrower-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(75, 60, 251, 0.15);
     }
 
-    .btn-secondary {
-        padding: 12px;
-        font-weight: 500;
+    .payment-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(75, 60, 251, 0.1);
     }
 
-    /* Mobile tweaks */
     @media (max-width: 576px) {
+
         h2 {
             font-size: 1.3rem;
         }
 
-        .form-label {
-            font-size: 0.95rem;
+        .borrower-card {
+            padding: 0.5rem;
         }
 
-        .form-control {
-            padding: 12px;
-            font-size: 0.95rem;
+        .borrower-card h5 {
+            font-size: 1.1rem;
         }
 
-        .list-group-item {
+        .borrower-card p {
             font-size: 0.9rem;
-            padding: 12px;
+        }
+
+        .payment-card p {
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            font-size: 0.85rem;
+            padding: 10px;
         }
     }
 

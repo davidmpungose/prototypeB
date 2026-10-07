@@ -199,3 +199,43 @@ td {
         margin-bottom: 1rem;
     }
 }
+
+/* MOBILE CARD TABLES */
+@media (max-width: 600px) {
+
+    .table-responsive {
+        overflow-x: visible; /* disable scroll */
+    }
+
+    table {
+        display: block;
+    }
+
+    thead {
+        display: none; /* hide headers on mobile */
+    }
+
+    tbody tr {
+        display: block;
+        background: #ffffff;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(75, 60, 251, 0.1);
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+        border-bottom: none;
+        font-size: 0.9rem;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #4b5563;
+    }
+}
+

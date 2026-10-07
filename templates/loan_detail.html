@@ -1,118 +1,101 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-3">
 
     <h2 class="mb-4">
         <i class="bi bi-journal-text me-2"></i>Loan Details
     </h2>
 
-    <!-- Borrower Info -->
-    <div class="card shadow-sm mb-4">
+    <!-- Borrower Info Card -->
+    <div class="card shadow-sm mb-3 loan-card">
         <div class="card-body">
-            <h5 class="mb-3">
+
+            <h5 class="fw-semibold mb-3">
                 <i class="bi bi-person-circle me-2"></i>Borrower Information
             </h5>
 
-            <p><strong>Name:</strong> {{ borrower.name }}</p>
-            <p><strong>Phone:</strong> {{ borrower.phone }}</p>
+            <p class="mb-1"><strong>Name:</strong> {{ borrower.name }}</p>
+            <p class="mb-1"><strong>Phone:</strong> {{ borrower.phone }}</p>
+
         </div>
     </div>
 
-    <!-- Loan Summary -->
-    <div class="card shadow-sm mb-4">
+    <!-- Loan Summary Card -->
+    <div class="card shadow-sm mb-3 loan-card">
         <div class="card-body">
 
-            <h5 class="mb-3">
+            <h5 class="fw-semibold mb-3">
                 <i class="bi bi-file-text me-2"></i>Loan Summary
             </h5>
 
             <div class="row">
 
-                <div class="col-md-4 mb-3">
-                    <strong>Loan Amount:</strong>
-                    <div class="fs-5">R {{ loan.amount }}</div>
+                <div class="col-6 mb-3">
+                    <p class="small text-muted mb-0">Loan Amount</p>
+                    <p class="fw-bold">E {{ loan.amount }}</p>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <strong>Date Issued:</strong>
-                    <div class="fs-5">{{ loan.date }}</div>
+                <div class="col-6 mb-3">
+                    <p class="small text-muted mb-0">Date Issued</p>
+                    <p class="fw-bold">{{ loan.date }}</p>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <strong>Status:</strong>
-                    <div class="fs-5">
-                        {% if loan.status == "Active" %}
-                            <span class="badge bg-success">Active</span>
-                        {% elif loan.status == "Overdue" %}
-                            <span class="badge bg-danger">Overdue</span>
-                        {% elif loan.status == "Paid" %}
-                            <span class="badge bg-primary">Paid</span>
-                        {% else %}
-                            <span class="badge bg-secondary">{{ loan.status }}</span>
-                        {% endif %}
-                    </div>
-                </div>
+                <div class="col-6 mb-3">
+                    <p class="small text-muted mb-0">Status</p>
 
-            </div>
-
-            <hr>
-
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-                    <strong>Total Received:</strong>
-                    <div class="fs-5 text-success">R {{ money_received }}</div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <strong>Balance:</strong>
-                    {% if balance > 0 %}
-                        <div class="fs-5 text-danger fw-bold">R {{ balance }}</div>
+                    {% if loan.status == "Active" %}
+                        <span class="badge bg-success">Active</span>
+                    {% elif loan.status == "Overdue" %}
+                        <span class="badge bg-danger">Overdue</span>
+                    {% elif loan.status == "Paid" %}
+                        <span class="badge bg-primary">Paid</span>
                     {% else %}
-                        <div class="fs-5 text-success fw-bold">R 0</div>
+                        <span class="badge bg-secondary">{{ loan.status }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="col-6 mb-3">
+                    <p class="small text-muted mb-0">Total Received</p>
+                    <p class="fw-bold text-success">E {{ money_received }}</p>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <p class="small text-muted mb-0">Balance</p>
+                    {% if balance > 0 %}
+                        <p class="fw-bold text-danger">E {{ balance }}</p>
+                    {% else %}
+                        <p class="fw-bold text-success">E 0</p>
                     {% endif %}
                 </div>
 
             </div>
 
-            <div class="mt-3">
-                <a href="/loans/{{ loan.id }}/pay" class="btn btn-success">
-                    <i class="bi bi-cash me-1"></i>Record Payment
-                </a>
-            </div>
+            <a href="/loans/{{ loan.id }}/pay" class="btn btn-success w-100 mt-2">
+                <i class="bi bi-cash me-1"></i>Record Payment
+            </a>
 
         </div>
     </div>
 
-    <!-- Payment History -->
-    <div class="card shadow-sm mb-4">
+    <!-- Payment History Card -->
+    <div class="card shadow-sm mb-3 loan-card">
         <div class="card-body">
 
-            <h5 class="mb-3">
+            <h5 class="fw-semibold mb-3">
                 <i class="bi bi-receipt me-2"></i>Payment History
             </h5>
 
             {% if payments %}
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
+                {% for p in payments %}
+                <div class="payment-card mb-3 p-3 rounded shadow-sm">
 
-                <tbody>
-                    {% for p in payments %}
-                    <tr>
-                        <td>{{ p.id }}</td>
-                        <td>R {{ p.amount }}</td>
-                        <td>{{ p.date }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    <p class="mb-1"><strong>Payment ID:</strong> {{ p.id }}</p>
+                    <p class="mb-1"><strong>Amount:</strong> E {{ p.amount }}</p>
+                    <p class="mb-1"><strong>Date:</strong> {{ p.date }}</p>
+
+                </div>
+                {% endfor %}
             {% else %}
                 <p class="text-muted">No payments recorded yet.</p>
             {% endif %}
@@ -121,9 +104,59 @@
     </div>
 
     <!-- Back Button -->
-    <a href="/loans" class="btn btn-secondary">
+    <a href="/loans" class="btn btn-secondary w-100">
         <i class="bi bi-arrow-left me-1"></i>Back to Loans
     </a>
 
 </div>
+
+<!-- CARD-BASED MOBILE STYLING -->
+<style>
+
+    .loan-card {
+        border-radius: 16px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .loan-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(75, 60, 251, 0.15);
+    }
+
+    .payment-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(75, 60, 251, 0.1);
+    }
+
+    @media (max-width: 576px) {
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .loan-card {
+            padding: 0.5rem;
+        }
+
+        .loan-card h5 {
+            font-size: 1.1rem;
+        }
+
+        .loan-card p {
+            font-size: 0.9rem;
+        }
+
+        .payment-card p {
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            font-size: 0.85rem;
+            padding: 10px;
+        }
+    }
+
+</style>
+
 {% endblock %}

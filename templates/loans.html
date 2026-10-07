@@ -14,122 +14,118 @@
         </a>
     </div>
 
-    <!-- Loans Table -->
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <!-- Loan Cards -->
+    <div class="loan-list">
 
-            <h5 class="mb-3">All Loans</h5>
+        {% for loan in loans %}
+        <div class="card loan-card shadow-sm">
 
-            <!-- MOBILE SCROLL WRAPPER -->
-            <div class="table-responsive">
+            <div class="card-body">
 
-                <table class="table table-hover align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Borrower</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Balance</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                <!-- Loan Header -->
+                <h5 class="fw-semibold mb-1">Loan #{{ loan.id }}</h5>
+                <p class="text-muted mb-2">Borrower: {{ loan.borrower_name }}</p>
 
-                    <tbody>
-                        {% for loan in loans %}
-                        <tr>
+                <!-- Loan Summary -->
+                <div class="row mb-3">
 
-                            <!-- Loan ID -->
-                            <td>{{ loan.id }}</td>
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Amount</p>
+                        <p class="fw-bold">E {{ loan.amount }}</p>
+                    </div>
 
-                            <!-- Borrower Name -->
-                            <td>{{ loan.borrower_name }}</td>
+                    <div class="col-6">
+                        <p class="small text-muted mb-0">Date</p>
+                        <p class="fw-bold">{{ loan.date }}</p>
+                    </div>
 
-                            <!-- Amount -->
-                            <td>R {{ loan.amount }}</td>
+                    <div class="col-6 mt-2">
+                        <p class="small text-muted mb-0">Status</p>
 
-                            <!-- Date -->
-                            <td>{{ loan.date }}</td>
+                        {% if loan.status == "Active" %}
+                            <span class="badge bg-success">Active</span>
+                        {% elif loan.status == "Overdue" %}
+                            <span class="badge bg-danger">Overdue</span>
+                        {% elif loan.status == "Paid" %}
+                            <span class="badge bg-primary">Paid</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ loan.status }}</span>
+                        {% endif %}
+                    </div>
 
-                            <!-- Status Badge -->
-                            <td>
-                                {% if loan.status == "Active" %}
-                                    <span class="badge bg-success">Active</span>
-                                {% elif loan.status == "Overdue" %}
-                                    <span class="badge bg-danger">Overdue</span>
-                                {% elif loan.status == "Paid" %}
-                                    <span class="badge bg-primary">Paid</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">{{ loan.status }}</span>
-                                {% endif %}
-                            </td>
+                    <div class="col-6 mt-2">
+                        <p class="small text-muted mb-0">Balance</p>
+                        {% if loan.balance > 0 %}
+                            <p class="fw-bold text-danger">E {{ loan.balance }}</p>
+                        {% else %}
+                            <p class="fw-bold text-success">E 0</p>
+                        {% endif %}
+                    </div>
 
-                            <!-- Balance -->
-                            <td>
-                                {% if loan.balance > 0 %}
-                                    <span class="text-danger fw-bold">R {{ loan.balance }}</span>
-                                {% else %}
-                                    <span class="text-success fw-bold">R 0</span>
-                                {% endif %}
-                            </td>
+                </div>
 
-                            <!-- Actions -->
-                            <td class="text-center">
+                <!-- Actions -->
+                <div class="d-flex gap-2">
 
-                                <a href="/loans/{{ loan.id }}" 
-                                   class="btn btn-sm btn-outline-primary mb-1 w-100">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                    <a href="/loans/{{ loan.id }}" 
+                       class="btn btn-outline-primary w-50">
+                        <i class="bi bi-eye me-1"></i>View
+                    </a>
 
-                                <a href="/loans/{{ loan.id }}/pay" 
-                                   class="btn btn-sm btn-outline-success w-100">
-                                    <i class="bi bi-cash"></i>
-                                </a>
+                    <a href="/loans/{{ loan.id }}/pay" 
+                       class="btn btn-outline-success w-50">
+                        <i class="bi bi-cash me-1"></i>Pay
+                    </a>
 
-                            </td>
+                </div>
 
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-
-                </table>
-
-            </div> <!-- end table-responsive -->
+            </div>
 
         </div>
+        {% endfor %}
+
     </div>
 
 </div>
 
-<!-- MOBILE OPTIMIZATION -->
+<!-- CARD-BASED MOBILE STYLING -->
 <style>
+
+    .loan-card {
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .loan-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(75, 60, 251, 0.15);
+    }
+
     @media (max-width: 576px) {
 
         h2 {
             font-size: 1.3rem;
         }
 
-        .table-responsive {
-            border-radius: 10px;
-            overflow-x: auto;
+        .loan-card {
+            padding: 0.5rem;
         }
 
-        table th, table td {
+        .loan-card h5 {
+            font-size: 1.1rem;
+        }
+
+        .loan-card p {
+            font-size: 0.9rem;
+        }
+
+        .btn {
             font-size: 0.85rem;
-            white-space: nowrap;
-        }
-
-        td .btn {
-            padding: 6px 8px;
-            font-size: 0.75rem;
-        }
-
-        .btn-primary {
-            font-size: 0.95rem;
             padding: 10px;
         }
     }
+
 </style>
 
 {% endblock %}
